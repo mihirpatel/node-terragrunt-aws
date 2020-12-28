@@ -7,9 +7,11 @@ RUN echo "Terraform: ${TERRAFORM}, Terragrunt: ${TERRAGRUNT}"
 RUN apk add --no-cache \
   ca-certificates openssl openssh \
   groff less bash curl sudo \
-  jq git zip tar 
+  jq git zip tar \
+  && apk --update add --virtual build-dependencies \
+		python3-dev libffi-dev openssl-dev build-base
 
-RUN apk add --no-cache \
+RUN apk add --no-cache tzdata \
         python3 \
         py3-pip \
     && pip3 --no-cache-dir install --upgrade pip \
@@ -29,6 +31,9 @@ RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM}/
 
 RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT}/terragrunt_linux_amd64 \
   && chmod +x /usr/local/bin/terragrunt
+
+RUN apk del build-dependencies python3-dev libffi-dev openssl-dev build-base \
+  && rm -rf /var/cache/apk/*
 
 WORKDIR /apps
 
