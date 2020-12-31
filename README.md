@@ -9,9 +9,13 @@ TERRAFORM=0.13.4
 image="mihirpatel/node-terragrunt-aws"
 tag="12-alpine-${TERRAFORM}-${TERRAGRUNT}"
 
-# Build
+# Build (no cache)
 docker build --build-arg TERRAGRUNT=${TERRAGRUNT} --build-arg TERRAFORM=${TERRAFORM} \
   --no-cache -t ${image}:${tag} .
+
+# Build (use cache)
+docker build --build-arg TERRAGRUNT=${TERRAGRUNT} --build-arg TERRAFORM=${TERRAFORM} \
+  -t ${image}:${tag} .
 
 # Push to registry
 docker push ${image}:${tag}

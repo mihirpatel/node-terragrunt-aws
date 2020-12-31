@@ -35,6 +35,10 @@ RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt
 RUN apk del build-dependencies python3-dev libffi-dev openssl-dev build-base \
   && rm -rf /var/cache/apk/*
 
+#wget $(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep linux_amd64 | cut -d '"' -f 4) -O /usr/bin/yq
+RUN wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64 -O /usr/bin/yq \
+  && chmod +x /usr/bin/yq
+
 WORKDIR /apps
 
 ENTRYPOINT []
