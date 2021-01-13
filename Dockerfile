@@ -8,7 +8,7 @@ RUN apk add --no-cache \
   ca-certificates openssl openssh \
   groff less bash curl sudo \
   jq git zip tar \
-  && apk --update add --virtual build-dependencies \
+  && apk --no-cache --update add --virtual build-dependencies \
 		python3-dev libffi-dev openssl-dev build-base
 
 RUN apk add --no-cache tzdata \
@@ -32,7 +32,7 @@ RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM}/
 RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT}/terragrunt_linux_amd64 \
   && chmod +x /usr/local/bin/terragrunt
 
-RUN apk del build-dependencies python3-dev libffi-dev openssl-dev build-base \
+RUN apk del build-dependencies \
   && rm -rf /var/cache/apk/*
 
 #wget $(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep linux_amd64 | cut -d '"' -f 4) -O /usr/bin/yq
