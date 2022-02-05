@@ -15,7 +15,7 @@ tag="14-bullseye-${TERRAFORM}-${TERRAGRUNT}"
 
 # Build (no cache)
 docker build --build-arg TERRAGRUNT=${TERRAGRUNT} --build-arg TERRAFORM=${TERRAFORM} \
-  --no-cach*e -t ${image}:${tag} .
+  --no-cache -t ${image}:${tag} .
 
 # Build (use cache)
 docker build --build-arg TERRAGRUNT=${TERRAGRUNT} --build-arg TERRAFORM=${TERRAFORM} \

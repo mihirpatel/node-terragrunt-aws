@@ -144,22 +144,22 @@ RUN set -ex; \
 RUN apt-get install -y --no-install-recommends \
   ca-certificates openssl openssh-client \
   groff less bash curl sudo \
-  jq git zip tar
+  jq git zip tar wget unzip
 
 RUN pip3 --no-cache-dir install --upgrade pip \
     && pip3 --no-cache-dir install --ignore-installed \
         awscli virtualenv \
     && rm -rf /var/cache/apk/* \
-    && python3 --version
 
-RUN apt-get install -y --no-install-recommends wget zip unzip;
-RUN echo "Terraform: ${TERRAFORM}, Terragrunt: ${TERRAGRUNT}"
-RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM}/terraform_${TERRAFORM}_linux_amd64.zip && \
-  unzip terraform.zip -d /usr/local/bin && \
-  rm -f terraform.zip
+RUN echo "Installing TerraEnv Utility to manage multiple versions of terraform and terragrunt" \
+    && wget https://github.com/aaratn/terraenv/releases/latest/download/terraenv_linux_x64.tar.gz -O terraenv_linux_x64.tar.gz \
+    && tar -xzf terraenv_linux_x64.tar.gz -C /usr/bin/ \
+    && rm -f terraenv_linux_x64.tar.gz \
+    && terraenv -h
 
-RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT}/terragrunt_linux_amd64 \
-  && chmod +x /usr/local/bin/terragrunt
+RUN echo "Terraform: ${TERRAFORM}, Terragrunt: ${TERRAGRUNT}, using terraenv"
+RUN terraenv terraform install ${TERRAFORM} && terraenv terraform install 1.1.5 && terraenv terraform use ${TERRAFORM} && terraform --version
+RUN terraenv terragrunt install ${TERRAGRUNT} && terraenv terragrunt install 0.36.1 && terraenv terragrunt use ${TERRAGRUNT} && terragrunt --version
 
 #wget $(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep linux_amd64 | cut -d '"' -f 4) -O /usr/bin/yq
 RUN wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64 -O /usr/bin/yq \
@@ -168,9 +168,6 @@ RUN wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64
 RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
   apt-get clean autoclean && apt-get autoremove --yes; \
   rm -rf /var/lib/{apt,dpkg,cache,log}/
-
-# RUN apt-get clean autoclean && apt-get autoremove --yes; \
-#   rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 WORKDIR /apps
 
