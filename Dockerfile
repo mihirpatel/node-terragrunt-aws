@@ -32,6 +32,8 @@ RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM}/
 RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT}/terragrunt_linux_amd64 \
   && chmod +x /usr/local/bin/terragrunt
 
+RUN apk add --no-cache autoconf
+
 RUN apk del build-dependencies \
   && rm -rf /var/cache/apk/*
 
