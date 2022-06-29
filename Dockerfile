@@ -32,7 +32,8 @@ RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM}/
 RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT}/terragrunt_linux_amd64 \
   && chmod +x /usr/local/bin/terragrunt
 
-RUN apk add --no-cache autoconf
+# Added for gifsicle postinstall script, which expects c compiler and make system
+RUN apk add --no-cache autoconf automake gcc make g++ zlib-dev
 
 RUN apk del build-dependencies \
   && rm -rf /var/cache/apk/*
