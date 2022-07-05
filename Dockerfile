@@ -33,7 +33,22 @@ RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt
   && chmod +x /usr/local/bin/terragrunt
 
 # Added for gifsicle postinstall script, which expects c compiler and make system
-RUN apk add --no-cache autoconf automake gcc make g++ zlib-dev
+RUN apk add --no-cache gcc make g++ zlib-dev
+RUN apk add --update --no-cache \
+		automake make \
+		g++ gcc \
+		alpine-sdk  \
+		nasm  \
+		autoconf  \
+		build-base \
+		zlib \
+		zlib-dev \
+		libpng \
+		libpng-dev\
+		libwebp \
+		libwebp-dev \
+		libjpeg-turbo \
+		libjpeg-turbo-dev
 
 RUN apk del build-dependencies \
   && rm -rf /var/cache/apk/*

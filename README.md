@@ -6,7 +6,7 @@ Combination of https://github.com/jch254/docker-node-terraform-aws and https://g
 # Set Arguments
 TERRAGRUNT=0.25.2
 TERRAFORM=0.13.4
-image="mihirpatel/node-terragrunt-aws"
+image="mihirpatel/node-terragrunt-aws-gifsicle"
 tag="12-alpine-${TERRAFORM}-${TERRAGRUNT}"
 
 # Build (no cache)
