@@ -33,7 +33,6 @@ RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt
   && chmod +x /usr/local/bin/terragrunt
 
 # Added for gifsicle postinstall script, which expects c compiler and make system
-RUN apk add --no-cache gcc make g++ zlib-dev
 RUN apk add --update --no-cache \
 		automake make \
 		g++ gcc \
@@ -50,8 +49,8 @@ RUN apk add --update --no-cache \
 		libjpeg-turbo \
 		libjpeg-turbo-dev
 
-RUN apk del build-dependencies \
-  && rm -rf /var/cache/apk/*
+#RUN apk del build-dependencies \
+#  && rm -rf /var/cache/apk/*
 
 #wget $(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep linux_amd64 | cut -d '"' -f 4) -O /usr/bin/yq
 RUN wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64 -O /usr/bin/yq \
