@@ -158,13 +158,22 @@ RUN echo "Installing TerraEnv Utility to manage multiple versions of terraform a
     && terraenv -h
 
 RUN echo "Terraform: ${TERRAFORM}, Terragrunt: ${TERRAGRUNT}, using terraenv"
-RUN terraenv terraform install ${TERRAFORM} && terraenv terraform install 1.1.5 && terraenv terraform use ${TERRAFORM} && terraform --version
-RUN terraenv terragrunt install ${TERRAGRUNT} && terraenv terragrunt install 0.36.1 && terraenv terragrunt use ${TERRAGRUNT} && terragrunt --version
+RUN terraenv terraform install ${TERRAFORM} && terraenv terraform install 1.3.2 && terraenv terraform use ${TERRAFORM} && terraform --version
+RUN terraenv terragrunt install ${TERRAGRUNT} && terraenv terragrunt install 0.39.1 && terraenv terragrunt use ${TERRAGRUNT} && terragrunt --version
 
 #wget $(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep linux_amd64 | cut -d '"' -f 4) -O /usr/bin/yq
 RUN wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64 -O /usr/bin/yq \
   && chmod +x /usr/bin/yq
 
+#session manager plugin for ssh tunnel over AWS System Manager - Session Manager
+RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb" \
+  && dpkg -i session-manager-plugin.deb \
+  && rm session-manager-plugin.deb
+
+#utilities for automation
+RUN apt-get install figlet
+
+#cleanup
 RUN apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
   apt-get clean autoclean && apt-get autoremove --yes; \
   rm -rf /var/lib/{apt,dpkg,cache,log}/
