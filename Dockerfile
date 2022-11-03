@@ -158,8 +158,8 @@ RUN echo "Installing TerraEnv Utility to manage multiple versions of terraform a
     && terraenv -h
 
 RUN echo "Terraform: ${TERRAFORM}, Terragrunt: ${TERRAGRUNT}, using terraenv"
-RUN terraenv terraform install ${TERRAFORM} && terraenv terraform install 1.3.2 && terraenv terraform use ${TERRAFORM} && terraform --version
-RUN terraenv terragrunt install ${TERRAGRUNT} && terraenv terragrunt install 0.39.1 && terraenv terragrunt use ${TERRAGRUNT} && terragrunt --version
+RUN terraenv terraform install ${TERRAFORM} && terraenv terraform install 1.3.3 && terraenv terraform use ${TERRAFORM} && terraform --version
+RUN terraenv terragrunt install ${TERRAGRUNT} && terraenv terragrunt install 0.39.2 && terraenv terragrunt use ${TERRAGRUNT} && terragrunt --version
 
 #wget $(curl -s https://api.github.com/repos/mikefarah/yq/releases/latest | grep browser_download_url | grep linux_amd64 | cut -d '"' -f 4) -O /usr/bin/yq
 RUN wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64 -O /usr/bin/yq \
