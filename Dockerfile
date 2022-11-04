@@ -7,9 +7,9 @@ RUN echo "Terraform: ${TERRAFORM}, Terragrunt: ${TERRAGRUNT}"
 RUN apk add --no-cache \
   ca-certificates openssl openssh \
   groff less bash curl sudo \
-  jq git zip tar \
+  jq git zip tar libxml2 libxslt \
   && apk --no-cache --update add --virtual build-dependencies \
-		python3-dev libffi-dev openssl-dev build-base
+		python3-dev libffi-dev openssl-dev build-base libxml2-dev libxslt-dev
 
 RUN apk add --no-cache tzdata \
         python3 \
@@ -25,15 +25,15 @@ RUN cd /usr/bin \
 	&& ln -s python3 python \
 	&& python --version && cd
 
-RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM}/terraform_${TERRAFORM}_linux_amd64.zip && \
-  unzip terraform.zip -d /usr/local/bin && \
-  rm -f terraform.zip
-
-RUN wget -O /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT}/terragrunt_linux_amd64 \
-  && chmod +x /usr/local/bin/terragrunt
-
 # Added for gifsicle postinstall script, which expects c compiler and make system
 RUN apk add --no-cache autoconf automake gcc make g++ zlib-dev
+
+RUN echo "Installing TerraEnv Utility to manage multiple versions of terraform and terragrunt" \
+    && pip install --ignore-installed terraenv
+
+RUN echo "Terraform: ${TERRAFORM}, Terragrunt: ${TERRAGRUNT}, using terraenv"
+RUN terraenv terraform install ${TERRAFORM} && terraenv terraform install 1.3.3 && terraenv terraform use ${TERRAFORM} && terraform --version
+RUN terraenv terragrunt install ${TERRAGRUNT} && terraenv terragrunt install 0.39.2 && terraenv terragrunt use ${TERRAGRUNT} && terragrunt --version
 
 RUN apk del build-dependencies \
   && rm -rf /var/cache/apk/*
