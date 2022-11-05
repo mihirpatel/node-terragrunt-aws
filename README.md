@@ -8,8 +8,8 @@ Combination of following docker images, in order to support lambda build with no
 
 ```
 # Set Arguments
-TERRAGRUNT=0.34.1
-TERRAFORM=0.13.7
+TERRAGRUNT=0.39.2
+TERRAFORM=1.3.3
 image="mihirpatel/node-terragrunt-aws"
 tag="14-bullseye-${TERRAFORM}-${TERRAGRUNT}"
 
